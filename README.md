@@ -4,13 +4,13 @@ CSCI406 Assignment 2
 
 ## Program Information:
 
-1. Names: 
-* Brandon Maurice Parrish
-* Christopher Travis Johnson
-* Zac McClain
-2. Date: 10/27/2015
-3. Course: CSCI406 Algorithms
-4. Professor: Dr. Dinesh Mehta
+* Names: 
+	* Brandon Maurice Parrish
+	* Christopher Travis Johnson
+	* Zac McClain
+* Date: 10/27/2015
+* Course: CSCI406 Algorithms
+* Professor: Dr. Dinesh Mehta
 
 ##Source file(s):
 	src/main.cpp
