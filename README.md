@@ -1,13 +1,13 @@
 
 #Title: Dynamic Programming
-##CSCI406 Assignment 2
+CSCI406 Assignment 2
 
 ## Program Information
 
 *Names: 
-1.Brandon Maurice Parrish
-2.Christopher Travis Johnson
-3.Zac McClain
+	*Brandon Maurice Parrish
+	*Christopher Travis Johnson
+	*Zac McClain
 *Date: 10/27/2015
 *Course: CSCI406 Algorithms
 *Professor: Dr. Dinesh Mehta
