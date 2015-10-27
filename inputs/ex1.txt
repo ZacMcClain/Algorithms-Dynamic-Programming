@@ -1,0 +1,9 @@
+% Example input for the CSCI406 Dynamic Programming Assignment.
+% The first data line in this file contains the day count (n)
+% The remaining lines are data values for s0...sn and x0...xn respectively, 
+% separated by a space.
+4
+8 10
+4 1
+2 7
+1 7

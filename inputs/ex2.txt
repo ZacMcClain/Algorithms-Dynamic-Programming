@@ -1,0 +1,24 @@
+% The first data line in this file contains the day count (n)
+% The remaining lines are data values for s0...sn and x0...xn respectively, 
+% separated by a space.
+20
+30 18
+26 9
+25 1
+23 16
+21 12
+18 20
+17 1
+16 15
+15 9
+13 5
+12 17
+11 11
+10 3
+8 40
+7 21
+5 29
+4 2
+3 2
+2 8
+1 2
