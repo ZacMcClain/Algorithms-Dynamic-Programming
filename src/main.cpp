@@ -92,6 +92,35 @@ void printArray( int* stringAddr, int arrayLen, string name )
   cout << "]" << endl;
 }
 
+int calcSumNoReboot( int* sArray, int* xArray, int days )
+{
+	int dataSum = 0;
+	for( int i = 0; i < days; i++ )  {
+		// if si < xi we can only process si terabytes of data
+		if( sArray[i] < xArray[i] )  {
+			dataSum += sArray[i];
+		// if si > xi we can process all xi terabytes of data
+		}else if( sArray[i] > xArray[i] )  {
+			dataSum += xArray[i];
+		} else { // si == xi we can process all xi terabytes of data
+			dataSum += xArray[i];
+		}	
+	}
+	return( dataSum );
+}
+
+int dynamicProgramingAlgorithm( int* sArray, int* xArray, int daysSinceLastReboot ) 
+{
+	int dataSum = 0;
+
+	return( dataSum );
+}
+
+void tracebackAlgorithm()
+{
+
+}
+
 int main( int argc, char** argv )
 {
 	FILE *filePointer;
@@ -143,6 +172,15 @@ int main( int argc, char** argv )
 		printArray( sArray, numberOfDays, "S" );
 		printArray( xArray, numberOfDays, "X" );
 	}
+
+	// Save the result of our dynamic programing algorithm.
+	//int maxDataProcessed = dynamicProgramingAlgorithm( sArray, xArray, numberOfDays );
+
+	// Calculate the amount of data processed with no reboot.
+	int maxDataProcessedWithNoReboot = calcSumNoReboot( sArray, xArray, numberOfDays );
+
+	cout << "Data processed with no reboots: ";
+	cout << numberToString(maxDataProcessedWithNoReboot) << endl;
 
 	// Deallocate memory
 	delete[] sArray;
