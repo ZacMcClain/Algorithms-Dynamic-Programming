@@ -10,6 +10,8 @@
 
 // Use colored text outputs
 static const bool COLOR_ON = true;
+int* sArray;
+int* wasterArray;
 
 using namespace std;
 
@@ -109,9 +111,32 @@ int calcSumNoReboot( int* sArray, int* xArray, int days )
 	return( dataSum );
 }
 
-int dynamicProgramingAlgorithm( int* sArray, int* xArray, int daysSinceLastReboot ) 
+int dynamicProgramingAlgorithm( int* xArray, int xSize ) 
 {
 	int dataSum = 0;
+
+	// Basis case:
+	if( xSize == 1 ) {
+		
+	}
+
+	for( int i = 0; i < xSize; i++ )  {
+		wasterArray[i] = sArray[i] - xArray[i];
+		// if si < xi we can only process si terabytes of data
+		if( sArray[i] < xArray[i] )  {
+			dataSum += sArray[i];
+		// if si > xi we can process all xi terabytes of data
+		}else if( sArray[i] > xArray[i] )  {
+			dataSum += xArray[i];
+		} else { // si == xi we can process all xi terabytes of data
+			dataSum += xArray[i];
+		}
+	}
+
+	int* worstDay = max_element(wasterArray, wasterArray+xSize);
+	cout << "Max Wasted: " << worstDay[0] << endl;
+
+	dynamicProgramingAlgorithm( int* xArray, int xSize ) 
 
 	return( dataSum );
 }
@@ -127,7 +152,6 @@ int main( int argc, char** argv )
   	char line[1024];
   	char* fileName = argv[1];
   	int numberOfDays; // aka n
-  	int* sArray; // s0...sn
   	int* xArray; // x0...xn
 
   	// ensure that only one argument has been provided
@@ -157,6 +181,7 @@ int main( int argc, char** argv )
 	// Allocate memory;
 	sArray = new int[numberOfDays];
 	xArray = new int[numberOfDays];
+	wasterArray = new int[numberOfDays];
 
 	// readIn the rest of the array
 	for( int i = 0; i < numberOfDays; i++ ) {
@@ -174,7 +199,12 @@ int main( int argc, char** argv )
 	}
 
 	// Save the result of our dynamic programing algorithm.
-	//int maxDataProcessed = dynamicProgramingAlgorithm( sArray, xArray, numberOfDays );
+	int maxDataProcessed = dynamicProgramingAlgorithm( xArray, numberOfDays );
+
+	printArray( wasterArray, numberOfDays, "wasted" );
+
+	cout << "Data processed with reboots: ";
+	cout << numberToString(maxDataProcessed) << endl;
 
 	// Calculate the amount of data processed with no reboot.
 	int maxDataProcessedWithNoReboot = calcSumNoReboot( sArray, xArray, numberOfDays );
