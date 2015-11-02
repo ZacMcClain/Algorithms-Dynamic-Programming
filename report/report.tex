@@ -1,0 +1,17 @@
+\documentclass[12pt]{article}
+\usepackage[margin=25mm]{geometry}
+\begin{document}
+\section{Problem}
+\paragraph{}
+Given $x_1, x_2, \dots, x_n$ TB of available data for the next $n$ days and given the amount of data a server can process $s_1, s_2, \dots, s_n$ for $n$ days after a fresh reboot.
+\paragraph{}
+Choose the days on which you are going to reboot so as to maximize the total amount of data you process.
+\section{Dynamic Programming Algorithm}
+\subsection{Main Idea}
+On each day, decide whether the server processing is limited by the available data or the processing capability.
+\paragraph{Breaking Problem Into Sub-problems}
+On day $d$, choose to reboot on day $i$ where $i$ is the index of the day that maximizes the amount of data processed in the right partition of the list.
+\subsection{Pseudocode}
+\subsection{Traceback Algorithm}
+\subsection{Time Complexity}
+\end{document}
