@@ -1,5 +1,8 @@
 \documentclass[12pt]{article}
+\usepackage{listings}
+\lstloadlanguages{Ruby}
 \usepackage[margin=25mm]{geometry}
+\usepackage{fontenc}
 \usepackage{moreverb}
 \begin{document}
 \section{Problem}
@@ -24,29 +27,32 @@ This matrix will need to be of size $n+1$ rows by $n$ columns and will be initia
 # X represents the sequence of x_i values indexed from 1.
 # S represents the sequence of s_j values indexed from 1.
 def main():
-	# read input and populate X and S
+	readInput()	# populate X and S lists from given input
 	row_init()	# initialize zeroth row of P (results matrix) with 0s
 	GetMaximumProcessed(X, S)
 
 def GetMaximumProcessed(X, S):
 	for i in range(length of X):
 		for j in range(length of S):
-			# ensure do not calculate lower diagonals (impossible)
+			# ensure do not waste time computing values...
+			# ...that have already been computed
+			# ...that are impossible to use (i.e. x_1 data processed using s_2)
 			P[i][j] = Min(X[i], S[j])
 			if P[j - 1][i - 1] is a valid cell,
 				then P[i][j] += P[j - 1][i - 1]
 			if there are columns remaining in the left portion of the table P,
 				then P[i][j] += the maximum of the i - j - 1 column.
-	return max value of last column in P 
+	return max value of last column in P as optimum amount of data processed
 
 \end{verbatimtab}
 \subsection{Traceback Algorithm (10 pts)}
-\paragraph{}
-Find the goal cell (maximum value in the results table P).
+\paragraph{Report Path to Optimum}
+Find the goal cell (the maximum value in the results table P) which will be in the right-most column.
 From the right-most column in P, get the row index of the max value in that column.
-Using the indices of the max value, the day that will have caused that reboot is the index of the column - index of the row.
+Using the indices of the max value, the day that will have caused that reboot is the index of the column subtracted by the index of the row (e.g. $column - row$).
 Add the number of the day that will have caused that reboot to a set tracking the days we will reboot the server.
 Repeat this process for the columns on the left of the column of the last reboot until we do not have any more days on which to try and reboot.
+When there are no more days left to make a decision, we report the set of days to reboot and on all other days- we will decide to process the data.
 \begin{verbatimtab}[4]
 SHOULD WE ADD PSEUDOCODE FOR TRACEBACK?
 \end{verbatimtab}
@@ -54,5 +60,13 @@ SHOULD WE ADD PSEUDOCODE FOR TRACEBACK?
 \paragraph{} $O(n^2)$
 \section{Implementation}
 \subsection{Code (15 pts)}
+\lstset{tabsize=2,
+	numbers=left, numberstyle=\tiny,
+	frame=single,
+	language=Ruby,
+	breaklines=true, breakindent=5pt,
+	extendedchars=true
+}
+\lstinputlisting[caption="Ruby Implementation"]{../DP.rb}
 \subsection{Small Example (10 pts)}
 \end{document}
