@@ -79,5 +79,45 @@ def make_table( given, can )
  	print_table table	# output the table
 	return table
 end		
-					
-make_table( [10,1,7,7], [8,4,2,1] )
+
+def column_max_index( table, column )
+	max = -9999999
+	index = 0
+	(0...(column + 2)).each do |x|
+		if table[x][column] != nil
+			if  table[x][column] > max
+				max = table[x][column]
+				index = x
+			end
+		end
+	end
+
+	return index
+end
+
+def trace_back(table)
+	
+	reboots = Array.new()
+
+	column = table.length - 2
+	column = column - column_max_index(table, column) - 1
+
+	while column >= -1
+		reboots << (column + 1)
+
+		if column == -1
+			break
+		end
+
+		column = column - column_max_index(table, column) - 1
+
+	end
+
+	return reboots
+end				
+
+table = make_table( [1,10], [10,1] )
+puts "Max amount of data that could be processed: #{column_max( table, table.length - 2 )}"
+p trace_back(table)
+
+
