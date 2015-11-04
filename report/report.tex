@@ -1,10 +1,14 @@
 \documentclass[12pt]{article}
 \usepackage{listings}
+\usepackage{multicol}
 \lstloadlanguages{Ruby}
 \usepackage[margin=25mm]{geometry}
 \usepackage{fontenc}
 \usepackage{moreverb}
+\author{C. Travis Johnson \\ Zac McClain \\ Brandon Parrish}
+\title{Dynamic Programming Project}
 \begin{document}
+\maketitle
 \section{Problem}
 \paragraph{}
 Given $x_1, x_2, \dots, x_n$ TB of available data for the next $n$ days and given the amount of data a server can process $s_1, s_2, \dots, s_n$ for $n$ days after a fresh reboot (in TB).
@@ -15,8 +19,9 @@ Choose the days on which you are going to reboot so as to maximize the total amo
 \paragraph{Breaking Problem Into Sub-problems}
 For days $0$ to $n$, choose to restart on day $d$ such that $max(f(d))$ where $f(d) = P(0,d-1) + P(d+1,n)$.
 Find the amount of data proceesed $P(i,j)$ for a range of days $[i, j]$ provided you start with a fresh server ($s_1$) on day $i$.
+For the right partition (days $d+1$ to $n$), we only need to keep track of the optimal value of data processed and the day $d$ on which we choose to reboot.
 Now for the left partition (days $0$ to $d-1$), repeat the same process of choosing the ideal day to reboot.
-This process will end when the length of $X$, the number of days of data left to process is 1 or 0 (when rebooting will not increase the amount of data processed).
+This process will end when the length of the left partition, the number of days of data left to process is 1 or 0 (when rebooting will not increase the amount of data processed).
 \paragraph{Calculating $P(i, j)$, the Amount of Data Processed without rebooting from days $i$ to $j$}
 On each day, decide whether the amount of data the server processes is limited by the amount of available data or the processing capability of the server. Return the sum of the limiting factors (available data or power) across days $i$ through $j$ as $P(i, j)$.
 \paragraph{Don't Repeat Calculations, The Essence of Dynamic Programming}
@@ -28,20 +33,29 @@ This matrix will need to be of size $n+1$ rows by $n$ columns and will be initia
 # S represents the sequence of s_j values indexed from 1.
 def main():
 	readInput()	# populate X and S lists from given input
+	# P (results matrix) will be of size n+1 by n (rows by columns)
 	row_init()	# initialize zeroth row of P (results matrix) with 0s
 	GetMaximumProcessed(X, S)
 
 def GetMaximumProcessed(X, S):
-	for i in range(length of X):
+	# Begin Populating table P
+	# Days 0 to d represents the left partition.
+	# Day d + 1 represents the partition day.
+	# Day d + 2 to n (length of X) represents the right parition.
+	for d in range(length of X):
 		for j in range(length of S):
 			# ensure do not waste time computing values...
 			# ...that have already been computed
 			# ...that are impossible to use (i.e. x_1 data processed using s_2)
-			P[i][j] = Min(X[i], S[j])
-			if P[j - 1][i - 1] is a valid cell,
-				then P[i][j] += P[j - 1][i - 1]
-			if there are columns remaining in the left portion of the table P,
-				then P[i][j] += the maximum of the i - j - 1 column.
+			P[d][j] = Min(X[d], S[j])
+			# P[d][j] depends on P[j - 1][d - 1]
+			# ...because we build table P from left to right
+			if P[j - 1][d - 1] is a valid cell with value 0,
+				# the max of the left partition is in the d - j - 1 column
+				then P[d][j] += the maximum of the d - j - 1 column.
+			else if  P[j - 1][d - 1] is a valid cell
+				# there are columns remaining in the left portion of the table P
+				then P[d][j] += P[j - 1][d - 1]
 	return max value of last column in P as optimum amount of data processed
 
 \end{verbatimtab}
@@ -49,15 +63,14 @@ def GetMaximumProcessed(X, S):
 \paragraph{Report Path to Optimum}
 Find the goal cell (the maximum value in the results table P) which will be in the right-most column.
 From the right-most column in P, get the row index of the max value in that column.
-Using the indices of the max value, the day that will have caused that reboot is the index of the column subtracted by the index of the row (e.g. $column - row$).
+Using the indices of the max value, the day that will have caused that reboot (the day on which we will partition) is the index of the column subtracted by the index of the row (e.g. $column - row$).
 Add the number of the day that will have caused that reboot to a set tracking the days we will reboot the server.
-Repeat this process for the columns on the left of the column of the last reboot until we do not have any more days on which to try and reboot.
+Repeat this process for the columns on the left of the column of the last reboot (the left partition) until we do not have any more days on which to try and reboot.
 When there are no more days left to make a decision, we report the set of days to reboot and on all other days- we will decide to process the data.
-\begin{verbatimtab}[4]
-SHOULD WE ADD PSEUDOCODE FOR TRACEBACK?
-\end{verbatimtab}
 \subsection{Time Complexity (10 pts)}
-\paragraph{} $O(n^2)$
+\paragraph{}
+To create the results matrix (P), we must build a table of size $n + 1$ by $n$ which takes $O(n^2)$ time: we will ignore populating some of these cell values, but this will not directly impact the asymptotic complexity of the algorithm.
+In addition to building the table, we will occasionally do a linear scan of a column to find its maximum value: this will take $O(n)$ time which again, does not directly impact the aymptotic complexity of the algorithm. Other operations should take constant time, so our \textbf{algorithm runs with quadratic time complexity}- $O(n^2)$.
 \section{Implementation}
 \subsection{Code (15 pts)}
 \lstset{tabsize=2,
@@ -69,4 +82,24 @@ SHOULD WE ADD PSEUDOCODE FOR TRACEBACK?
 }
 \lstinputlisting[caption="Ruby Implementation"]{../DP.rb}
 \subsection{Small Example (10 pts)}
+\begin{minipage}{0.6\linewidth}
+\paragraph{}
+\noindent Given: $X = {10, 3, 1, 8, 6}$ and $S = {6, 4, 3, 2, 1}$ \\
+Construct the table and identify the maximum cell value (19).
+Because the maximum value (19) is in row index 2, we know \textbf{we reboot on day number 3 only} (or the 2nd indexed day counting from 0).
+\end{minipage}
+\hspace{0.05\linewidth}
+\begin{minipage}{0.3\linewidth}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+- & 10 & 3 & 1 & 8 & 6 \\ \hline
+- & 0 & 0 & 0 & 0 & 0 \\
+6 & 6 & 3 & 7 & 15 & 16 \\
+4 & - & 9 & 4 & 11 & \underline{\textbf{19}} \\
+3 & - & - & 10 & 7 & 14 \\
+2 & - & - & - & 12 & 9 \\
+1 & - & - & - & - & 13 \\
+\hline
+\end{tabular}
+\end{minipage}
 \end{document}
