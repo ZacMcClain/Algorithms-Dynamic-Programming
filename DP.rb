@@ -37,7 +37,6 @@ def min(x, s)
 end
 
 # return the maximum value of a specific column in a table
-# linear search causes O(n)
 def column_max( table, column )
 	max = -9999999
 	(0...(column + 2)).each do |x|
@@ -52,41 +51,27 @@ def column_max( table, column )
 end
 		
 # process the data sets X (given) and S (can)
-# two iterative loops causes O(n^2)?
 def make_table( given, can )
 	table = initialize_table(given, can)	# init row of 0s
-
 	# need one more row than columns (n + 1) rows
 	can = [0] + can
 
 	(0...(given.length)).each do |x|
 		(1...(can.length + 1)).each do |s|
-
 			# do not calculate min for lower diagonals
 			# cannot possibly process x_1 with the power of s_2, nor x_2 with s_3
 			if s - x < 2	
 				
-				if x - 1 < 0 || s - 1 < 0 
-					table[s][x] = min( given[x], can[s] )	# table[1][0] is min( x_1, s_1 )
-				
-				elsif s - x >=  0
-					table[s][x] = min( given[x], can[s] ) + table[ s - 1 ][ x - 1 ] 
-					# calculate sum of diagonals
+				table[s][x] = min( given[x], can[s] )
 
-				elsif s == 1
-
-					table[s][x] = min( given[x], can[s] ) + table[ s - 1 ][ x - 1 ] + column_max(table, x - s - 1 )
-					# calculate sum of diagonals + max of the column immediately left of a reboot
-
-				else 
-					table[s][x] = min( given[x], can[s] ) + table[ s - 1 ][ x - 1]
-					# what does this do differently from the second condition?
-
+				if s == 1 && x > 1
+					table[s][x] += column_max( table, x - s - 1 )
+				elsif x >= 1
+					table[s][x] += table[ s - 1 ][ x - 1 ]
 				end
 			end 
 		end
 	end
-
 	return table
 end		
 
@@ -103,15 +88,13 @@ def column_max_index( table, column )
 			end
 		end
 	end
-
 	return index
 end
 
-# Geven a table find the days on which to reboot, such that
+# Given a table find the days on which to reboot, such that
 # the the maximum amount of data is processed.
 # Return this in an array of days to reboot on.
 def trace_back(table)
-	
 	reboots = Array.new()
 
 	column = table.length - 2
@@ -125,15 +108,9 @@ def trace_back(table)
 		end
 
 		column = column - column_max_index(table, column) - 1
-
 	end
-
 	return reboots
 end
-
-# The example provided to us in the problem description
-exampleX = [10,1,7,7]
-exampleS = [8,4,2,1]
 
 # Our test case.
 ourX = [10, 3, 1, 8, 6]
@@ -157,7 +134,4 @@ days.each_with_index { |day, i|
 	else
 		print  "#{day+1},"
 	end
-
 }
-
-

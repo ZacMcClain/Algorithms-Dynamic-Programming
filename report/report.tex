@@ -21,7 +21,7 @@ For days $0$ to $n$, choose to restart on day $d$ such that $max(f(d))$ where $f
 Find the amount of data proceesed $P(i,j)$ for a range of days $[i, j]$ provided you start with a fresh server ($s_1$) on day $i$.
 For the right partition (days $d+1$ to $n$), we only need to keep track of the optimal value of data processed and the day $d$ on which we choose to reboot.
 Now for the left partition (days $0$ to $d-1$), repeat the same process of choosing the ideal day to reboot.
-This process will end when the length of the left partition, the number of days of data left to process is 1 or 0 (when rebooting will not increase the amount of data processed).
+This process will end when the length of the left partition, the number of days of data left to process, is 1 or 0 (when rebooting will not increase the amount of data processed).
 \paragraph{Calculating $P(i, j)$, the Amount of Data Processed without rebooting from days $i$ to $j$}
 On each day, decide whether the amount of data the server processes is limited by the amount of available data or the processing capability of the server. Return the sum of the limiting factors (available data or power) across days $i$ through $j$ as $P(i, j)$.
 \paragraph{Don't Repeat Calculations, The Essence of Dynamic Programming}
@@ -70,7 +70,7 @@ When there are no more days left to make a decision, we report the set of days t
 \subsection{Time Complexity}
 \paragraph{}
 To create the results matrix (P), we must build a table of size $n + 1$ by $n$ which takes $O(n^2)$ time: we will ignore populating some of these cell values, but this will not directly impact the asymptotic complexity of the algorithm.
-In addition to building the table, we will occasionally do a linear scan of a column to find its maximum value: this will take $O(n)$ time which again, does not directly impact the aymptotic complexity of the algorithm. Other operations should take constant time, so our \textbf{algorithm runs with quadratic time complexity}- $O(n^2)$.
+In addition to building the table, we will occasionally do a linear scan of a column to find its maximum value: this will take $O(n)$ time which, again, does not directly impact the aymptotic complexity of the algorithm. Other operations should take constant time, so our \textbf{algorithm runs with quadratic time complexity}- $O(n^2)$.
 \section{Implementation}
 \subsection{Code}
 \lstset{tabsize=2,
