@@ -15,7 +15,7 @@ Given $x_1, x_2, \dots, x_n$ TB of available data for the next $n$ days and give
 \paragraph{Goal}
 Choose the days on which you are going to reboot so as to maximize the total amount of data you process.
 \section{Dynamic Programming Algorithm}
-\subsection{Main Idea (20 pts)}
+\subsection{Main Idea}
 \paragraph{Breaking Problem Into Sub-problems}
 For days $0$ to $n$, choose to restart on day $d$ such that $max(f(d))$ where $f(d) = P(0,d-1) + P(d+1,n)$.
 Find the amount of data proceesed $P(i,j)$ for a range of days $[i, j]$ provided you start with a fresh server ($s_1$) on day $i$.
@@ -27,7 +27,7 @@ On each day, decide whether the amount of data the server processes is limited b
 \paragraph{Don't Repeat Calculations, The Essence of Dynamic Programming}
 As we process the values of $P(i, j)$ for various $[i, j]$, we will populate a results matrix (two-dimensional array) to avoid repetitive calulations of both $P(i, j)$ and $P(a, b)$ where $i = a$ and $j = b$.
 This matrix will need to be of size $n+1$ rows by $n$ columns and will be initialized with a row of zero values which represent the amount of data processed on day $d$ if we reboot on day $d$.
-\subsection{Pseudocode (10 pts)}
+\subsection{Pseudocode}
 \begin{verbatimtab}[4]
 # X represents the sequence of x_i values indexed from 1.
 # S represents the sequence of s_j values indexed from 1.
@@ -59,7 +59,7 @@ def GetMaximumProcessed(X, S):
 	return max value of last column in P as optimum amount of data processed
 
 \end{verbatimtab}
-\subsection{Traceback Algorithm (10 pts)}
+\subsection{Traceback Algorithm}
 \paragraph{Report Path to Optimum}
 Find the goal cell (the maximum value in the results table P) which will be in the right-most column.
 From the right-most column in P, get the row index of the max value in that column.
@@ -67,12 +67,12 @@ Using the indices of the max value, the day that will have caused that reboot (t
 Add the number of the day that will have caused that reboot to a set tracking the days we will reboot the server.
 Repeat this process for the columns on the left of the column of the last reboot (the left partition) until we do not have any more days on which to try and reboot.
 When there are no more days left to make a decision, we report the set of days to reboot and on all other days- we will decide to process the data.
-\subsection{Time Complexity (10 pts)}
+\subsection{Time Complexity}
 \paragraph{}
 To create the results matrix (P), we must build a table of size $n + 1$ by $n$ which takes $O(n^2)$ time: we will ignore populating some of these cell values, but this will not directly impact the asymptotic complexity of the algorithm.
 In addition to building the table, we will occasionally do a linear scan of a column to find its maximum value: this will take $O(n)$ time which again, does not directly impact the aymptotic complexity of the algorithm. Other operations should take constant time, so our \textbf{algorithm runs with quadratic time complexity}- $O(n^2)$.
 \section{Implementation}
-\subsection{Code (15 pts)}
+\subsection{Code}
 \lstset{tabsize=2,
 	numbers=left, numberstyle=\tiny,
 	frame=single,
@@ -81,7 +81,7 @@ In addition to building the table, we will occasionally do a linear scan of a co
 	extendedchars=true
 }
 \lstinputlisting[caption="Ruby Implementation"]{../DP.rb}
-\subsection{Small Example (10 pts)}
+\subsection{Small Example}
 \begin{minipage}{0.6\linewidth}
 \paragraph{}
 \noindent Given: $X = {10, 3, 1, 8, 6}$ and $S = {6, 4, 3, 2, 1}$ \\
