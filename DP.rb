@@ -10,7 +10,18 @@ end
 def print_table table
 	table.each do |x|
 		if x != nil
-			x.each { |y| print "#{y} " }	
+			rowLen = x.size
+			x.each_with_index { |y, i|
+				if( i == (rowLen - 1) )
+					str = "|%5d|" % y
+					print str
+				elsif( y == nil )
+					print "|*****"
+				else
+					str = "|%5d" % y
+					print str
+				end
+			}
 		end
 		puts
 	end
@@ -76,10 +87,11 @@ def make_table( given, can )
 		end
 	end
 
- 	print_table table	# output the table
 	return table
 end		
 
+# Given a table and a column find the max in that column and
+# return the index of that value.
 def column_max_index( table, column )
 	max = -9999999
 	index = 0
@@ -95,6 +107,9 @@ def column_max_index( table, column )
 	return index
 end
 
+# Geven a table find the days on which to reboot, such that
+# the the maximum amount of data is processed.
+# Return this in an array of days to reboot on.
 def trace_back(table)
 	
 	reboots = Array.new()
@@ -114,10 +129,35 @@ def trace_back(table)
 	end
 
 	return reboots
-end				
+end
 
-table = make_table( [1,10], [10,1] )
+# The example provided to us in the problem description
+exampleX = [10,1,7,7]
+exampleS = [8,4,2,1]
+
+# Our test case.
+ourX = [10, 3, 1, 8, 6]
+ourS = [6, 4, 3, 2, 1]
+
+####### MAIN ########
+
+# Make the table
+table = make_table( ourX, ourS )
+# output the table
+print_table table
+# output DP result
 puts "Max amount of data that could be processed: #{column_max( table, table.length - 2 )}"
-p trace_back(table)
+# output traceback
+print "To get this max reboot on day(s): "
+days = trace_back(table)
+dayCount = days.size
+days.each_with_index { |day, i|
+	if( i == dayCount - 1 )
+		print  "#{day+1}\n"
+	else
+		print  "#{day+1},"
+	end
+
+}
 
 
