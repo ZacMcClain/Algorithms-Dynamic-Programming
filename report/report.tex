@@ -3,6 +3,7 @@
 \usepackage{multicol}
 \lstloadlanguages{Ruby}
 \usepackage[margin=25mm]{geometry}
+\usepackage{framed}
 \usepackage{fontenc}
 \usepackage{moreverb}
 \author{C. Travis Johnson \\ Zac McClain \\ Brandon Parrish}
@@ -85,8 +86,8 @@ In addition to building the table, we will occasionally do a linear scan of a co
 \begin{minipage}{0.6\linewidth}
 \paragraph{}
 \noindent Given: $X = {10, 3, 1, 8, 6}$ and $S = {6, 4, 3, 2, 1}$ \\
-Construct the table and identify the maximum cell value (19).
-Because the maximum value (19) is in row index 2, we know \textbf{we reboot on day number 3 only} (or the 2nd indexed day counting from 0).
+Construct the table (right) and identify the maximum cell value (19).
+Because the maximum value (19) is in row index 2, we know \textbf{we reboot on day number 3 only} (or the 2nd indexed day counting from 0). The program in this document produces the console output (below).
 \end{minipage}
 \hspace{0.05\linewidth}
 \begin{minipage}{0.3\linewidth}
@@ -102,4 +103,7 @@ Because the maximum value (19) is in row index 2, we know \textbf{we reboot on d
 \hline
 \end{tabular}
 \end{minipage}
+\begin{framed}
+\verbatiminput{rubyOutput.txt}
+\end{framed}
 \end{document}
